@@ -1,0 +1,16 @@
+{
+  "APP_NAME": "Zorglak Energi Baza",
+  "LANG": { "EN": "Inglakt", "MA": "Martlak" },
+  "MODE": { "DARK": "Zon", "LIGHT": "Lax" },
+  "NOT_FOUND": { "TITLE": "Ooopsnax!", "MESSAGE": "Da glorp lak nok vin." },
+  "LOGIN": {
+    "TITLE": "GleepNet",
+    "EMAIL": "Glorpnal",
+    "PASSWORD": "Glapzap",
+    "EMAIL_PLACEHOLDER": "Gleep glorpnal nax",
+    "PASSWORD_PLACEHOLDER": "Gleep glapzap nax",
+    "LOGIN": "GleepNet"
+  },
+  "SELECT_LANGUAGE": "Zorblip Glorpnal",
+  "SELECT_MODE": "Zorblip Glapzap"
+}

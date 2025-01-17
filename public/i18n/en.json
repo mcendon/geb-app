@@ -1,0 +1,25 @@
+{
+  "APP_NAME": "Galactic Energy Bazaar",
+  "LANG": {
+    "EN": "English",
+    "MA": "Martian"
+  },
+  "MODE": {
+    "DARK": "Dark",
+    "LIGHT": "Light"
+  },
+  "NOT_FOUND": {
+    "TITLE": "Ooops!",
+    "MESSAGE": "The page you are looking for does not exist."
+  },
+  "LOGIN": {
+    "TITLE": "Login",
+    "EMAIL": "Email",
+    "PASSWORD": "Password",
+    "EMAIL_PLACEHOLDER": "Enter your email",
+    "PASSWORD_PLACEHOLDER": "Enter your password",
+    "LOGIN": "Login"
+  },
+  "SELECT_LANGUAGE": "Select Language",
+  "SELECT_MODE": "Select Mode"
+}
