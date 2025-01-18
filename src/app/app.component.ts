@@ -22,9 +22,7 @@ import { Subject, takeUntil } from 'rxjs';
   template: `<router-outlet></router-outlet> `,
   styles: `
   :host {
-    &[data-bs-theme="dark"] {
-      background-color: var(--bs-light-bg-subtle);
-    }
+    background: var(--bs-primary-bg-subtle);;
   }
   `,
   host: {
@@ -32,13 +30,13 @@ import { Subject, takeUntil } from 'rxjs';
   },
 })
 export class AppComponent {
-  translate = inject(TranslateService);
-  store = inject(Store);
-  mode = signal('dark');
+  private readonly translate = inject(TranslateService);
+  private readonly store = inject(Store);
+  private readonly mode = signal('');
 
-  mode$ = this.store.select(selectMode);
-  language$ = this.store.select(selectLanguage);
-  destroy$ = new Subject();
+  private readonly mode$ = this.store.select(selectMode);
+  private readonly language$ = this.store.select(selectLanguage);
+  private readonly destroy$ = new Subject();
 
   constructor() {
     this.translate.addLangs(['en', 'ma']);

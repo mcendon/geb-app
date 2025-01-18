@@ -16,7 +16,7 @@ import { Subject, takeUntil } from 'rxjs';
   selector: 'geb-footer',
   imports: [FormsModule, TranslatePipe],
   template: `
-    <div class="container-fluid row">
+    <footer class="container-fluid row py-3 mt-auto">
       <div class="col-md-9 d-flex align-items-center">
         <span>&copy; {{ year }} {{ appName() }}.</span>
       </div>
@@ -52,13 +52,18 @@ import { Subject, takeUntil } from 'rxjs';
           </select>
         </div>
       </div>
-    </div>
+    </footer>
   `,
   styles: `
   :host {
     font-size: 0.8rem;
+    background-color: var(--bs-warning-bg-subtle);
+    color: var(--bs-warning-text-emphasis);
   }
   `,
+  host: {
+    class: 'mt-auto',
+  },
 })
 export class FooterComponent {
   appName = input('');

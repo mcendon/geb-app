@@ -4,6 +4,7 @@ import { User } from '../interfaces/user.interface';
 import { Planet } from '../interfaces/planet.interface';
 import { Language } from '../interfaces/language.interface';
 import { Trade } from '../interfaces/trade.interface';
+import { Session } from '../interfaces/session.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class InMemoryDataService implements InMemoryDbService {
       name: 'John Doe',
       planetId: 1,
       profiles: ['user', 'trader'],
-      email: 'john.doe@example.com',
+      email: 'john.doe@earth.com',
       preferredMode: 'light',
       password: 'password123',
     },
@@ -24,7 +25,7 @@ export class InMemoryDataService implements InMemoryDbService {
       name: 'Jane Smith',
       planetId: 2,
       profiles: ['user', 'trader-limited'],
-      email: 'jane.smith@example.com',
+      email: 'jane.smith@mars.com',
       preferredMode: 'dark',
       password: 'password123',
     },
@@ -33,7 +34,7 @@ export class InMemoryDataService implements InMemoryDbService {
       name: 'Alice Johnson',
       planetId: 3,
       profiles: ['user', 'trader-approver'],
-      email: 'alice.johnson@example.com',
+      email: 'alice.johnson@venus.com',
       preferredMode: 'light',
       password: 'password123',
     },
@@ -42,7 +43,7 @@ export class InMemoryDataService implements InMemoryDbService {
       name: 'Bob Brown',
       planetId: 1,
       profiles: ['user'],
-      email: 'bob.brown@example.com',
+      email: 'bob.brown@earth.com',
       preferredMode: 'dark',
       password: 'password123',
     },
@@ -111,12 +112,36 @@ export class InMemoryDataService implements InMemoryDbService {
     },
   ];
 
+  sessions: Session[] = [];
+
   createDb() {
     return {
       users: this.users,
       languages: this.languages,
       planets: this.planets,
       trades: this.trades,
+      sessions: this.sessions,
     };
+  }
+
+  createSession(user: User): Session {
+    const token = `${Math.random().toString(36).substring(2)}${Math.random()
+      .toString(36)
+      .substring(2)}`; // random token
+    const session = {
+      id: this.sessions.length + 1,
+      userId: user.id,
+      token,
+      expiresAt: new Date(Date.now() + 3600 * 1000), // 1 hour from now
+    };
+    this.sessions.push(session);
+    return session;
+  }
+
+  getSessionByToken(token: string): Session | undefined {
+    //demo only, not secure
+    return this.sessions.find(
+      (session) => session.token === token && session.expiresAt > new Date()
+    );
   }
 }

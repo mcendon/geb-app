@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FooterComponent } from '../components/organisms/footer.component';
 import { LoginBoxComponent } from '../components/organisms/login-box.component';
+import { login } from '../store/actions/auth.actions';
 
 @Component({
   selector: 'geb-login-page',
@@ -17,20 +19,22 @@ import { LoginBoxComponent } from '../components/organisms/login-box.component';
         </div>
       </div>
     </main>
-    <footer class="flex mt-auto py-3 bg-light">
-      <geb-footer [appName]="'APP_NAME' | translate"></geb-footer>
-    </footer>
+    <geb-footer [appName]="'APP_NAME' | translate"></geb-footer>
   `,
   styles: `
     :host {
       display: flex; 
       flex-direction: column; 
       min-height: 100vh; 
+      background: var(--bs-light-bg-subtle);
+      color: var(	--bs-light-text-emphasis);
     }
   `,
 })
 export class LoginPageComponent {
-  doLogin(loginData: { email: string; password: string }) {
-    console.log(loginData);
+  private readonly store = inject(Store);
+
+  doLogin({ email, password }: { email: string; password: string }) {
+    this.store.dispatch(login({ email, password }));
   }
 }

@@ -17,6 +17,8 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { PreferencesEffects } from './store/effects/user-preferences.effects';
 import { preferencesReducer } from './store/reducers/user-preferences.reducer';
+import { authReducer } from './store/reducers/auth.reducer';
+import { AuthEffects } from './store/effects/auth.effects';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -44,6 +46,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore({
       preferences: preferencesReducer,
+      auth: authReducer,
     }),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
@@ -53,6 +56,6 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true, // If set to true, the connection is established within the Angular zone
     }),
-    provideEffects(PreferencesEffects),
+    provideEffects(PreferencesEffects, AuthEffects),
   ],
 };
