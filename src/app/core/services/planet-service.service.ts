@@ -12,4 +12,8 @@ export class PlanetService {
   getPlanets(): Observable<Planet[]> {
     return this.http.get<Planet[]>('api/planets');
   }
+
+  getPlanet(id: number): Observable<Planet> {
+    return this.http.get<Planet>(`api/planets/${id}`);
+  }
 }

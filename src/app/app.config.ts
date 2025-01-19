@@ -19,6 +19,12 @@ import { PreferencesEffects } from './store/effects/user-preferences.effects';
 import { preferencesReducer } from './store/reducers/user-preferences.reducer';
 import { authReducer } from './store/reducers/auth.reducer';
 import { AuthEffects } from './store/effects/auth.effects';
+import { UserEffects } from './store/effects/user.effects';
+import { userReducer } from './store/reducers/user.reducer';
+import { planetReducer } from './store/reducers/planet.reducer';
+import { PlanetEffects } from './store/effects/planet.effects';
+import { tradeReducer } from './store/reducers/trade.reducer';
+import { TradeEffects } from './store/effects/trade.effects';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -47,6 +53,9 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       preferences: preferencesReducer,
       auth: authReducer,
+      user: userReducer,
+      planet: planetReducer,
+      trades: tradeReducer,
     }),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
@@ -56,6 +65,12 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
       connectInZone: true, // If set to true, the connection is established within the Angular zone
     }),
-    provideEffects(PreferencesEffects, AuthEffects),
+    provideEffects(
+      PreferencesEffects,
+      AuthEffects,
+      UserEffects,
+      PlanetEffects,
+      TradeEffects
+    ),
   ],
 };

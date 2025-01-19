@@ -9,6 +9,25 @@ export const privateRoutes: Routes = [
       ),
   },
   {
+    path: 'leaderboard',
+    loadComponent: () =>
+      import('./leaderboard-page.component').then(
+        (m) => m.LeaderboardPageComponent
+      ),
+  },
+  {
+    path: 'sell-energy',
+    loadComponent: () =>
+      import('./trade-sell-page.component').then(
+        (m) => m.TradeSellPageComponent
+      ),
+  },
+  {
+    path: 'buy-energy',
+    loadComponent: () =>
+      import('./trade-buy-page.component').then((m) => m.TradeBuyPageComponent),
+  },
+  {
     path: '**',
     redirectTo: 'dashboard',
     pathMatch: 'full',

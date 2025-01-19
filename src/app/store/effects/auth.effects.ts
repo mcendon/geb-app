@@ -50,10 +50,37 @@ export class AuthEffects {
         ofType(AuthActions.logout),
         tap(() => {
           //Call "logout" service here....
-          localStorage.removeItem('userToken');
+          localStorage.removeItem('_session');
           this.router.navigate(['/login']);
         })
       ),
     { dispatch: false }
+  );
+
+  restoreSession$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.restoreSession),
+      switchMap(() => {
+        const session = localStorage.getItem('_session');
+        if (session) {
+          try {
+            const parsedSession = JSON.parse(session);
+            return of(
+              AuthActions.restoreSessionSuccess({ session: parsedSession })
+            );
+          } catch (error) {
+            return of(
+              AuthActions.restoreSessionFailure({
+                error: 'Failed to parse session',
+              })
+            );
+          }
+        } else {
+          return of(
+            AuthActions.restoreSessionFailure({ error: 'No session found' })
+          );
+        }
+      })
+    )
   );
 }

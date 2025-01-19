@@ -16,4 +16,16 @@ export const loginFailure = createAction(
   props<{ error: string }>()
 );
 
+export const restoreSession = createAction('[Auth] Restore Session');
+
+export const restoreSessionSuccess = createAction(
+  '[Auth] Restore Session Success',
+  props<{ session: Session }>()
+);
+
+export const restoreSessionFailure = createAction(
+  '[Auth] Restore Session Failure',
+  props<{ error: string }>()
+);
+
 export const logout = createAction('[Auth] Logout');

@@ -3,5 +3,5 @@ export interface Planet {
   name: string;
   availableEnergy: number;
   totalEnergy: number;
-  coinsAvailable: number;
+  credits: number;
 }

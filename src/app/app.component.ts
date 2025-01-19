@@ -40,7 +40,7 @@ export class AppComponent {
 
   constructor() {
     this.translate.addLangs(['en', 'ma']);
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang('en'); // fallback: will be used if the language isn't available
   }
 
   ngOnInit() {

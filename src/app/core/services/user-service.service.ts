@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from './interfaces/user.interface';
 
 @Injectable({
@@ -9,7 +9,12 @@ import { User } from './interfaces/user.interface';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>('api/users');
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`api/users/${id}`).pipe(
+      map((user: User) => {
+        delete user.password; // Remove the 'password' property
+        return user;
+      })
+    );
   }
 }

@@ -21,5 +21,12 @@
     "LOGIN": "Login"
   },
   "SELECT_LANGUAGE": "Select Language",
-  "SELECT_MODE": "Select Mode"
+  "SELECT_MODE": "Select Mode",
+  "MENU": {
+    "DASHBOARD": "Dashboard",
+    "LEADERBOARD": "Leaderboard",
+    "SELL": "Sell energy",
+    "BUY": "Buy energy"
+  },
+  "WELCOME_MESSAGE": "Welcome {{name}} from planet {{planet}}."
 }

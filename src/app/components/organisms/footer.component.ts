@@ -2,15 +2,15 @@ import { Component, effect, inject, input, model, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
-import {
-  selectLanguage,
-  selectMode,
-} from '../../store/selectors/user-preferences.selectors';
+import { Subject, takeUntil } from 'rxjs';
 import {
   setLanguage,
   setMode,
 } from '../../store/actions/user-preferences.actions';
-import { Subject, takeUntil } from 'rxjs';
+import {
+  selectLanguage,
+  selectMode,
+} from '../../store/selectors/user-preferences.selectors';
 
 @Component({
   selector: 'geb-footer',
@@ -25,7 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
           <label for="language">
             {{ 'SELECT_LANGUAGE' | translate }} :&nbsp;</label
           >
-          <select id="language" [(ngModel)]="selectedLanguage">
+          <select class="geb-footer__language" [(ngModel)]="selectedLanguage">
             @for(language of availableLanguages(); track $index) {
             <option
               [attr.selected]="
@@ -40,7 +40,7 @@ import { Subject, takeUntil } from 'rxjs';
         </div>
         <div>
           <label for="mode">{{ 'SELECT_MODE' | translate }} :&nbsp;</label>
-          <select id="mode" [(ngModel)]="selectedMode">
+          <select class="geb-footer__mode" [(ngModel)]="selectedMode">
             @for(mode of availableModes(); track $index) {
             <option
               [attr.selected]="selectedMode() === mode.code ? true : null"
@@ -59,6 +59,11 @@ import { Subject, takeUntil } from 'rxjs';
     font-size: 0.8rem;
     background-color: var(--bs-warning-bg-subtle);
     color: var(--bs-warning-text-emphasis);
+  }
+
+  .geb-footer__language,
+  .geb-footer__mode {
+    cursor: pointer;
   }
   `,
   host: {
@@ -87,6 +92,7 @@ export class FooterComponent {
   destroy$ = new Subject();
 
   constructor() {
+    // setup the effects to dispatch the actions when the selected language or mode changes
     effect(() => {
       this.store.dispatch(setLanguage({ language: this.selectedLanguage() }));
     });

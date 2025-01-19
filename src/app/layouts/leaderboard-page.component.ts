@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'geb-menu-item',
+  selector: 'geb-leaderboard-page',
   imports: [],
   template: `
     <p>
-      menu-item works!
+      leaderboard-page works!
     </p>
   `,
   styles: ``
 })
-export class MenuItemComponent {
+export class LeaderboardPageComponent {
 
 }

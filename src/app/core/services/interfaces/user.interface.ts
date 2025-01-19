@@ -4,6 +4,5 @@ export interface User {
   planetId: number;
   profiles: string[];
   email: string;
-  preferredMode: 'dark' | 'light';
-  password: string;
+  password?: string;
 }
