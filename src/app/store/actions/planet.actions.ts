@@ -16,14 +16,14 @@ export const fetchPlanetFailure = createAction(
   props<{ error: any }>()
 );
 
-export const addPlanetCredits = createAction(
-  '[Planet] Add Credits',
-  props<{ credits: number }>()
+export const addPlanetMoney = createAction(
+  '[Planet] Add Money',
+  props<{ money: number }>()
 );
 
-export const removePlanetCredits = createAction(
-  '[Planet] Remove Credits',
-  props<{ credits: number }>()
+export const decreasePlanetMoney = createAction(
+  '[Planet] Decrease Money',
+  props<{ money: number }>()
 );
 
 export const addPlanetEnergy = createAction(
@@ -31,7 +31,7 @@ export const addPlanetEnergy = createAction(
   props<{ energy: number }>()
 );
 
-export const removePlanetEnergy = createAction(
-  '[Planet] Remove Energy',
+export const decreasePlanetEnergy = createAction(
+  '[Planet] Decrease Energy',
   props<{ energy: number }>()
 );

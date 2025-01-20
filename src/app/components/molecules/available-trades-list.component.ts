@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { Trade } from '../../core/services/interfaces/trade.interface';
+import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
 
 @Component({
   selector: 'geb-available-trades-list',
@@ -11,7 +11,8 @@ import { Trade } from '../../core/services/interfaces/trade.interface';
         [class.active]="$index === selected"
         (click)="select(trade, $index)"
         class="list-group-item list-group-item-action"
-        >Buy {{ trade?.energyQty }} energy units from {{ trade?.sellerName }}</a
+        >Buy {{ trade?.energy }} energy units from
+        {{ trade?.planetSellerName }}</a
       >
       } @empty {
       <div class="list-group-item">No trades available</div>
@@ -28,8 +29,8 @@ import { Trade } from '../../core/services/interfaces/trade.interface';
   },
 })
 export class AvailableTradesListComponent {
-  onSelect = output<Trade>();
-  trades = input<Trade[]>([]);
+  onSelect = output<EnergyTrade>();
+  trades = input<EnergyTrade[]>([]);
   selected = 0;
 
   select(trade: any, index: number) {

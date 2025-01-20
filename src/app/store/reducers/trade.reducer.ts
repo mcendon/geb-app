@@ -1,42 +1,17 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import * as TradeActions from '../actions/trade.actions';
-import { Trade } from '../../core/services/interfaces/trade.interface';
+import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
 
 export interface TradeState {
-  availableTrades: Trade[];
-  planetTrades: Trade[];
-  lastGlobalTrades: Trade[];
+  trades: EnergyTrade[];
+  loading: boolean;
   error: string | null;
 }
 
 export const initialState: TradeState = {
-  availableTrades: [],
-  planetTrades: [],
-  lastGlobalTrades: [],
+  trades: [],
+  loading: false,
   error: null,
 };
 
-export const tradeReducer = createReducer(
-  initialState,
-  on(TradeActions.getAvailableTradesSuccess, (state, { trades }) => ({
-    ...state,
-    availableTrades: trades,
-  })),
-  on(TradeActions.getAvailableTradesFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
-  on(TradeActions.getPlanetHistoricTradesSuccess, (state, { trades }) => ({
-    ...state,
-    planetTrades: trades,
-  })),
-  on(TradeActions.getPlanetHistoricTradesFailure, (state, { error }) => ({
-    ...state,
-    error,
-  })),
-  on(TradeActions.buyEnergy, (state, { buyer, trade }) => ({
-    ...state,
-    availableTrades: state.availableTrades.filter((t) => t.id !== trade.id),
-    planetTrades: [...state.planetTrades, trade],
-  }))
-);
+export const tradeReducer = createReducer(initialState);

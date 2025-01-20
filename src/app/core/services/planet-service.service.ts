@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Planet } from './interfaces/planet.interface';
 
@@ -15,5 +15,13 @@ export class PlanetService {
 
   getPlanet(id: number): Observable<Planet> {
     return this.http.get<Planet>(`api/planets/${id}`);
+  }
+
+  getPlanetPurchases(id: number): Observable<Planet> {
+    return this.http.get<Planet>(`api/planets/${id}/purchases`);
+  }
+
+  getPlanetSales(id: number): Observable<Planet> {
+    return this.http.get<Planet>(`api/planets/${id}/sales`);
   }
 }

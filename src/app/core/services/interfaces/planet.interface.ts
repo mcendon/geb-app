@@ -1,7 +1,10 @@
+import { EnergyTrade } from './energy-trade.interface';
+
 export interface Planet {
   id: number;
   name: string;
-  availableEnergy: number;
-  totalEnergy: number;
-  credits: number;
+  energy: number;
+  money: number;
+  sales: EnergyTrade[];
+  purchases: EnergyTrade[];
 }

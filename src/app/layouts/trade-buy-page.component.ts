@@ -5,15 +5,15 @@ import { Store } from '@ngrx/store';
 import { PlanetState } from '../store/reducers/planet.reducer';
 import { TradeService } from '../core/services/trade-service.service';
 import { GalacticCurrencyPipe } from '../core/pipes/currency-pipe.pipe';
-import { Trade } from '../core/services/interfaces/trade.interface';
-import { buyEnergy, getAvailableTrades } from '../store/actions/trade.actions';
+import { buyEnergy } from '../store/actions/trade.actions';
 import { Planet } from '../core/services/interfaces/planet.interface';
+import { GALACTIC_ENERGY_PRICE } from '../core/constants';
 
 @Component({
   selector: 'geb-trade-buy-page',
   imports: [AvailableTradesListComponent, GalacticCurrencyPipe],
   template: `
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-6">
         <h1>Available trades</h1>
         <geb-available-trades-list
@@ -23,10 +23,10 @@ import { Planet } from '../core/services/interfaces/planet.interface';
       </div>
       <div class="col-md-6">
         <h1>Place order</h1>
-        @if( planet()!.credits > 0 ) {
+        @if( planet()!.money > 0 ) {
         <p>
           You have
-          <strong>{{ planet()!.credits | galacticCurrency }}</strong> available.
+          <strong>{{ planet()!.money | galacticCurrency }}</strong> available.
           Global energy price is {{ energyPrice() | galacticCurrency }}.
         </p>
         } @else {
@@ -47,67 +47,58 @@ import { Planet } from '../core/services/interfaces/planet.interface';
         <p>Select a seller from the left list to buy.</p>
         }
       </div>
-    </div>
+    </div> -->
   `,
   styles: ``,
 })
 export class TradeBuyPageComponent {
-  private readonly store = inject(Store);
-  private readonly tradeService = inject(TradeService);
-  private readonly destroy$ = new Subject<void>();
-
-  planet = signal<Planet | null>(null);
-  energyPrice = signal(0);
-  selectedTrade = signal<Trade | null>(null);
-  totalCost = computed(
-    () => this.selectedTrade()?.energyQty! * this.energyPrice()
-  );
-  availableTrades = signal<Trade[]>([]);
-
-  ngOnInit() {
-    this.store
-      .select('planet')
-      .pipe(
-        takeUntil(this.destroy$),
-        filter(({ planet }) => !!planet),
-        tap(({ planet }: PlanetState) => {
-          this.planet.set(planet);
-          this.store.dispatch(getAvailableTrades({ planetId: planet?.id! }));
-        })
-      )
-      .subscribe();
-
-    this.store
-      .select('trades')
-      .pipe(
-        takeUntil(this.destroy$),
-        filter(({ availableTrades }) => !!availableTrades),
-        tap(({ availableTrades }) => {
-          this.availableTrades.set(availableTrades);
-          this.selectedTrade.set(availableTrades[0]);
-        })
-      )
-      .subscribe();
-
-    this.energyPrice.set(this.tradeService.getEnergyPrice()); // I assume energy price is constant for all planets
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  selectTrade(trade: Trade) {
-    this.selectedTrade.set(trade);
-  }
-
-  buy() {
-    // dispatch buy action
-    if (this.planet() != null) {
-      const planet: Planet = this.planet()!;
-      this.store.dispatch(
-        buyEnergy({ buyer: planet, trade: this.selectedTrade()! })
-      );
-    }
-  }
+  // private readonly store = inject(Store);
+  // private readonly tradeService = inject(TradeService);
+  // private readonly destroy$ = new Subject<void>();
+  // planet = signal<Planet | null>(null);
+  // energyPrice = signal(0);
+  // totalCost = computed(
+  //   () => this.selectedTrade()?.energyQty! * this.energyPrice()
+  // );
+  // ngOnInit() {
+  //   this.store
+  //     .select('planet')
+  //     .pipe(
+  //       takeUntil(this.destroy$),
+  //       filter(({ planet }) => !!planet),
+  //       tap(({ planet }: PlanetState) => {
+  //         this.planet.set(planet);
+  //         this.store.dispatch(getAvailableTrades({ planetId: planet?.id! }));
+  //       })
+  //     )
+  //     .subscribe();
+  //   this.store
+  //     .select('trades')
+  //     .pipe(
+  //       takeUntil(this.destroy$),
+  //       filter(({ availableTrades }) => !!availableTrades),
+  //       tap(({ availableTrades }) => {
+  //         this.availableTrades.set(availableTrades);
+  //         this.selectedTrade.set(availableTrades[0]);
+  //       })
+  //     )
+  //     .subscribe();
+  //   this.energyPrice.set(GALACTIC_ENERGY_PRICE); // I assume energy price is constant for all planets
+  // }
+  // ngOnDestroy() {
+  //   this.destroy$.next();
+  //   this.destroy$.complete();
+  // }
+  // selectTrade(trade: Trade) {
+  //   this.selectedTrade.set(trade);
+  // }
+  // buy() {
+  //   // dispatch buy action
+  //   if (this.planet() != null) {
+  //     const planet: Planet = this.planet()!;
+  //     this.store.dispatch(
+  //       buyEnergy({ buyer: planet, trade: this.selectedTrade()! })
+  //     );
+  //   }
+  // }
 }

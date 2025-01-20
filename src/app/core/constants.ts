@@ -1,0 +1,1 @@
+export const GALACTIC_ENERGY_PRICE = 10;

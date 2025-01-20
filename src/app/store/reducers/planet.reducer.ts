@@ -31,32 +31,32 @@ export const planetReducer = createReducer(
     error,
     loading: false,
   })),
-  on(PlanetActions.addPlanetCredits, (state, { credits }) => ({
+  on(PlanetActions.addPlanetMoney, (state, { money }) => ({
     ...state,
     planet: {
       ...state.planet!,
-      coinsAvailable: state?.planet?.credits! + credits,
+      coinsAvailable: state?.planet?.money! + money,
     },
   })),
-  on(PlanetActions.removePlanetCredits, (state, { credits }) => ({
+  on(PlanetActions.decreasePlanetMoney, (state, { money }) => ({
     ...state,
     planet: {
       ...state.planet!,
-      coinsAvailable: state?.planet?.credits! - credits,
+      coinsAvailable: state?.planet?.money! - money,
     },
   })),
   on(PlanetActions.addPlanetEnergy, (state, { energy }) => ({
     ...state,
     planet: {
       ...state.planet!,
-      coinsAvailable: state?.planet?.totalEnergy! + energy,
+      coinsAvailable: state?.planet?.energy! + energy,
     },
   })),
-  on(PlanetActions.removePlanetEnergy, (state, { energy }) => ({
+  on(PlanetActions.decreasePlanetEnergy, (state, { energy }) => ({
     ...state,
     planet: {
       ...state.planet!,
-      coinsAvailable: state?.planet?.totalEnergy! - energy,
+      coinsAvailable: state?.planet?.energy! - energy,
     },
   }))
 );

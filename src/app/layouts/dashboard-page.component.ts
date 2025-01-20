@@ -1,13 +1,13 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { filter, Subject, takeUntil, tap } from 'rxjs';
 import { TradeTableComponent } from '../components/molecules/trade-table.component';
+import { GALACTIC_ENERGY_PRICE } from '../core/constants';
 import { GalacticCurrencyPipe } from '../core/pipes/currency-pipe.pipe';
+import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface';
 import { TradeService } from '../core/services/trade-service.service';
 import { PlanetState } from '../store/reducers/planet.reducer';
-import { TradeState } from '../store/reducers/trade.reducer';
-import { Trade } from '../core/services/interfaces/trade.interface';
-import { getPlanetHistoricTrades } from '../store/actions/trade.actions';
+import * as PlanetSelectors from '../store/selectors/planet.selectors';
 
 @Component({
   selector: 'geb-dashboard-page',
@@ -18,43 +18,51 @@ import { getPlanetHistoricTrades } from '../store/actions/trade.actions';
       <div class="row">
         <div class="col-md-8 p-2 col-12">
           <div class="mb-3">
-            <h2 class="title">My trades</h2>
-            <geb-trade-table [trades]="planetTrades()"></geb-trade-table>
+            <h2 class="title">Open trades</h2>
+            <geb-trade-table
+              [showBuyer]="false"
+              [trades]="openTrades()"
+            ></geb-trade-table>
           </div>
           <div class="mb-3">
-            <h2 class="title">Last global trades</h2>
-            <geb-trade-table></geb-trade-table>
+            <h2 class="title">Closed sales</h2>
+            <geb-trade-table
+              [showSeller]="false"
+              [trades]="closedSales()"
+            ></geb-trade-table>
+          </div>
+          <div class="mb-3">
+            <h2 class="title">Closed purchases</h2>
+            <geb-trade-table [trades]="closedPurchases()"></geb-trade-table>
           </div>
         </div>
         <div class="col-md-4">
           <div class="row p-2">
             <div
-              class="col-md-6 d-flex flex-column justify-content-center align-items-center"
+              class="col-md-12 d-flex flex-column justify-content-center align-items-center"
             >
-              <h2 class="title">Total energy</h2>
+              <h2 class="title">Planet energy</h2>
               <span class="text-lg"> {{ totalEnergy() }} </span>
-            </div>
-            <div
-              class="col-md-6 d-flex flex-column justify-content-center align-items-center"
-            >
-              <h2 class="title">Available energy</h2>
-              <span class="text-lg">{{ availableEnergy() }}</span>
             </div>
           </div>
           <div class="row p-2">
             <div
-              class="col-md-6 d-flex flex-column justify-content-center align-items-center"
+              class="col-md-12 d-flex flex-column justify-content-center align-items-center"
             >
-              <h2 class="title">Credits</h2>
+              <h2 class="title">Planet budget</h2>
               <span class="text-md">{{
-                planetCredits() | galacticCurrency
+                planetMoney() | galacticCurrency
               }}</span>
             </div>
+          </div>
+          <div class="row p-2">
             <div
-              class="col-md-6 d-flex flex-column justify-content-center align-items-center"
+              class="col-md-12 d-flex flex-column justify-content-center align-items-center"
             >
               <h2 class="title">Energy price</h2>
-              <span class="text-lg"> {{ energyPrice() }} </span>
+              <span class="text-md">
+                {{ energyPrice() | galacticCurrency }}
+              </span>
             </div>
           </div>
         </div>
@@ -66,7 +74,7 @@ import { getPlanetHistoricTrades } from '../store/actions/trade.actions';
     font-size: 3rem;
   }
   .text-md {
-    font-size: 1.2rem;
+    font-size: 2rem;
   }
   .title {
     font-size: 1rem;
@@ -80,10 +88,24 @@ export class DashboardPageComponent {
 
   planetName = signal('');
   totalEnergy = signal(0);
-  availableEnergy = signal(0);
-  planetCredits = signal(0);
+  planetMoney = signal(0);
   energyPrice = signal(0);
-  planetTrades = signal<Trade[]>([]);
+  planetPurchases!: Signal<EnergyTrade[] | undefined>;
+  planetSales!: Signal<EnergyTrade[] | undefined>;
+
+  openTrades = computed(() => {
+    return this.planetSales()?.filter((trade) => trade.status === 'new');
+  });
+
+  closedSales = computed(() => {
+    return this.planetSales()?.filter((trade) => trade.status === 'completed');
+  });
+
+  closedPurchases = computed(() => {
+    return this.planetPurchases()?.filter(
+      (trade) => trade.status === 'completed'
+    );
+  });
 
   ngOnInit() {
     this.store
@@ -93,29 +115,19 @@ export class DashboardPageComponent {
         filter(({ planet }) => !!planet),
         tap(({ planet }: PlanetState) => {
           this.planetName.set(planet?.name!);
-          this.totalEnergy.set(planet?.totalEnergy!);
-          this.availableEnergy.set(planet?.availableEnergy!);
-          this.planetCredits.set(planet?.credits!);
-
-          this.store.dispatch(
-            getPlanetHistoricTrades({ planetId: planet?.id! })
-          );
+          this.totalEnergy.set(planet?.energy!);
+          this.planetMoney.set(planet?.money!);
         })
       )
       .subscribe();
 
-    this.energyPrice.set(this.tradeService.getEnergyPrice()); // I assume energy price is constant for all planets
+    // For practical reasons, I assume energy price is constant for all planets
+    this.energyPrice.set(GALACTIC_ENERGY_PRICE);
 
-    this.store
-      .select('trades')
-      .pipe(
-        takeUntil(this.destroy$),
-        filter(({ planetTrades }: TradeState) => !!planetTrades),
-        tap(({ planetTrades }) => {
-          this.planetTrades.set(planetTrades);
-        })
-      )
-      .subscribe();
+    this.planetPurchases = this.store.selectSignal(
+      PlanetSelectors.selectPurchases
+    );
+    this.planetSales = this.store.selectSignal(PlanetSelectors.selectSales);
   }
 
   ngOnDestroy() {
