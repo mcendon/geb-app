@@ -1,7 +1,5 @@
 # GebApp
 
-This project was generated using Angular CLI version 19.0.7.
-
 Environment info:
 
 1. Angular CLI: 19.1.1
