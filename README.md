@@ -36,5 +36,3 @@ ng serve
 # How Do I Login?
 
 The application includes mocked users. Refer to the `InMemoryDataService.users` object.
-
-I hope this meets your needs! If you have any other requests or questions, feel free to ask.
