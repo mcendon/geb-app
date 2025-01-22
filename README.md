@@ -4,10 +4,10 @@ This project was generated using Angular CLI version 19.0.7.
 
 Environment info:
 
-Angular CLI: 19.1.1  
-Node: 20.15.1
-Package Manager: npm 10.9.2
-OS: win32 x64
+1. Angular CLI: 19.1.1
+2. Node: 20.15.1
+3. Package Manager: npm 10.9.2
+4. OS: win32 x64
 
 ## Development Server
 
