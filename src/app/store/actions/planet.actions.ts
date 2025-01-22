@@ -2,71 +2,83 @@ import { createAction, props } from '@ngrx/store';
 import { Planet } from '../../core/services/interfaces/planet.interface';
 import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
 
+const FETCH_PLANET = '[Planet] Fetch Planet';
+const FETCH_PLANET_SUCCESS = '[Planet] Fetch Planet Success';
+const FETCH_PLANET_FAILURE = '[Planet] Fetch Planet Failure';
+const FETCH_PLANET_SALES = '[Planet] Fetch Planet Sales';
+const FETCH_PLANET_SALES_SUCCESS = '[Planet] Fetch Planet Sales Success';
+const FETCH_PLANET_SALES_FAILURE = '[Planet] Fetch Planet Sales Failure';
+const FETCH_PLANET_PURCHASES = '[Planet] Fetch Planet Purchases';
+const FETCH_PLANET_PURCHASES_SUCCESS =
+  '[Planet] Fetch Planet Purchases Success';
+const FETCH_PLANET_PURCHASES_FAILURE =
+  '[Planet] Fetch Planet Purchases Failure';
+const ADD_NEW_PURCHASE = '[Planet] Add new purchase';
+const ADD_NEW_SALE = '[Planet] Add new sale';
+const PUSH_PURCHASE_REAL_TIME = '[Planet] Push new purchase real-time';
+const PUSH_SALE_REAL_TIME = '[Planet] Push new sale real-time';
+
 export const fetchPlanet = createAction(
-  '[Planet] Fetch Planet',
+  FETCH_PLANET,
   props<{ planetId: number }>()
 );
 
 export const fetchPlanetSuccess = createAction(
-  '[Planet] Fetch Planet Success',
+  FETCH_PLANET_SUCCESS,
   props<{ planet: Planet }>()
 );
 
 export const fetchPlanetFailure = createAction(
-  '[Planet] Fetch Planet Failure',
+  FETCH_PLANET_FAILURE,
   props<{ error: any }>()
 );
 
 export const fetchPlanetSales = createAction(
-  '[Planet] Fetch Planet Sales',
+  FETCH_PLANET_SALES,
   props<{ planetId: number }>()
 );
 
 export const fetchPlanetSalesSuccess = createAction(
-  '[Planet] Fetch Planet Sales Success',
+  FETCH_PLANET_SALES_SUCCESS,
   props<{ sales: EnergyTrade[] }>()
 );
 
 export const fetchPlanetSalesFailure = createAction(
-  '[Planet] Fetch Planet Sales Failure',
+  FETCH_PLANET_SALES_FAILURE,
   props<{ error: any }>()
 );
 
 export const fetchPlanetPurchases = createAction(
-  '[Planet] Fetch Planet Purchases',
+  FETCH_PLANET_PURCHASES,
   props<{ planetId: number }>()
 );
 
 export const fetchPlanetPurchasesSuccess = createAction(
-  '[Planet] Fetch Planet Purchases Success',
+  FETCH_PLANET_PURCHASES_SUCCESS,
   props<{ purchases: EnergyTrade[] }>()
 );
 
 export const fetchPlanetPurchasesFailure = createAction(
-  '[Planet] Fetch Planet Purchases Failure',
+  FETCH_PLANET_PURCHASES_FAILURE,
   props<{ error: any }>()
 );
 
-// Buy Energy
 export const addNewPurchase = createAction(
-  '[Planet] Add new purchase',
+  ADD_NEW_PURCHASE,
   props<{ trade: EnergyTrade }>()
 );
 
-// Sell Energy
 export const addNewSale = createAction(
-  '[Planet] Add new sale',
+  ADD_NEW_SALE,
   props<{ trade: EnergyTrade }>()
 );
 
-// Push trade coming from real-time server
 export const pushPurchaseRealTime = createAction(
-  '[Planet] Push new purchase real-time',
+  PUSH_PURCHASE_REAL_TIME,
   props<{ trade: EnergyTrade }>()
 );
 
-// Push trade coming from real-time server
 export const pushSaleRealTime = createAction(
-  '[Planet] Push new sale real-time',
+  PUSH_SALE_REAL_TIME,
   props<{ trade: EnergyTrade }>()
 );

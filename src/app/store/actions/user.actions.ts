@@ -1,17 +1,18 @@
 import { createAction, props } from '@ngrx/store';
 import { User } from '../../core/services/interfaces/user.interface';
 
-export const fetchUser = createAction(
-  '[User] Fetch User',
-  props<{ userId: number }>()
-);
+const FETCH_USER = '[User] Fetch User';
+const FETCH_USER_SUCCESS = '[User] Fetch User Success';
+const FETCH_USER_FAILURE = '[User] Fetch User Failure';
+
+export const fetchUser = createAction(FETCH_USER, props<{ userId: number }>());
 
 export const fetchUserSuccess = createAction(
-  '[User] Fetch User Success',
+  FETCH_USER_SUCCESS,
   props<{ user: User }>()
 );
 
 export const fetchUserFailure = createAction(
-  '[User] Fetch User Failure',
+  FETCH_USER_FAILURE,
   props<{ error: any }>()
 );

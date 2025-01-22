@@ -1,9 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+
+const SET_LANGUAGE = '[Preferences] Set Language';
+const SET_MODE = '[Preferences] Set Mode';
+
 export const setLanguage = createAction(
-  '[Preferences] Set Language',
+  SET_LANGUAGE,
   props<{ language: string }>()
 );
-export const setMode = createAction(
-  '[Preferences] Set Mode',
-  props<{ mode: string }>()
-);
+
+export const setMode = createAction(SET_MODE, props<{ mode: string }>());
