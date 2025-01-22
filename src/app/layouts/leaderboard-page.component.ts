@@ -3,11 +3,11 @@ import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface'
 import { Store } from '@ngrx/store';
 import * as TradeSelectors from '../store/selectors/trade.selectors';
 import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
-import { BarChartComponent } from '../components/molecules/bar-chart.component';
+import { PieChartComponent } from '../components/molecules/pie-chart.component';
 
 @Component({
   selector: 'geb-leaderboard-page',
-  imports: [EnergyFormatPipe, BarChartComponent],
+  imports: [EnergyFormatPipe, PieChartComponent],
   template: `
     <div class="d-flex flex-column p-3">
       <h1>Leaderboard</h1>
@@ -26,7 +26,7 @@ import { BarChartComponent } from '../components/molecules/bar-chart.component';
           </div>
         </div>
         <div class="col">
-          <geb-bar-chart [chartData]="leaderboardForChart()"></geb-bar-chart>
+          <geb-pie-chart [chartData]="leaderboardForChart()"></geb-pie-chart>
         </div>
       </div>
     </div>

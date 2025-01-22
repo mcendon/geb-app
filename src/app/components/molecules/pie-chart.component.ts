@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'geb-bar-chart',
+  selector: 'geb-pie-chart',
   imports: [NgFor],
   template: `
     <section>
@@ -36,7 +36,7 @@ import {
   encapsulation: ViewEncapsulation.ShadowDom,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BarChartComponent {
+export class PieChartComponent {
   @Input() chartData: { value: number; label: string; color: string }[] = [];
 
   generateConicGradient() {
