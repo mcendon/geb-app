@@ -5,6 +5,4 @@ export interface Planet {
   name: string;
   energy: number;
   money: number;
-  sales: EnergyTrade[];
-  purchases: EnergyTrade[];
 }

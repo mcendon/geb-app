@@ -1,16 +1,25 @@
 import { createReducer, on } from '@ngrx/store';
+import { GALACTIC_ENERGY_PRICE } from '../../core/constants';
+import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
 import * as PlanetActions from '../actions/planet.actions';
-import { Planet } from '../../core/services/interfaces/planet.interface';
 
 export interface PlanetState {
-  planet: Planet | null;
+  planet: any;
+  sales: EnergyTrade[];
+  purchases: EnergyTrade[];
   loading: boolean;
-  error: string | null;
+  loadingSales: boolean;
+  loadingPurchases: boolean;
+  error: string;
 }
 
 export const initialState: PlanetState = {
   planet: null,
+  sales: [],
+  purchases: [],
   loading: false,
+  loadingSales: false,
+  loadingPurchases: false,
   error: null,
 };
 
@@ -22,7 +31,7 @@ export const planetReducer = createReducer(
   })),
   on(PlanetActions.fetchPlanetSuccess, (state, { planet }) => ({
     ...state,
-    planet,
+    planet: { ...planet },
     error: null,
     loading: false,
   })),
@@ -31,32 +40,88 @@ export const planetReducer = createReducer(
     error,
     loading: false,
   })),
-  on(PlanetActions.addPlanetMoney, (state, { money }) => ({
+  on(PlanetActions.fetchPlanetSales, (state) => ({
     ...state,
-    planet: {
-      ...state.planet!,
-      coinsAvailable: state?.planet?.money! + money,
-    },
+    loadingSales: true,
   })),
-  on(PlanetActions.decreasePlanetMoney, (state, { money }) => ({
+  on(PlanetActions.fetchPlanetSalesSuccess, (state, { sales }) => ({
     ...state,
-    planet: {
-      ...state.planet!,
-      coinsAvailable: state?.planet?.money! - money,
-    },
+    sales: [...sales],
+    error: null,
+    loadingSales: false,
   })),
-  on(PlanetActions.addPlanetEnergy, (state, { energy }) => ({
+  on(PlanetActions.fetchPlanetSalesFailure, (state, { error }) => ({
     ...state,
-    planet: {
-      ...state.planet!,
-      coinsAvailable: state?.planet?.energy! + energy,
-    },
+    error,
+    loadingSales: false,
   })),
-  on(PlanetActions.decreasePlanetEnergy, (state, { energy }) => ({
+  on(PlanetActions.fetchPlanetPurchases, (state) => ({
+    ...state,
+    loadingPurchases: true,
+  })),
+  on(PlanetActions.fetchPlanetPurchasesSuccess, (state, { purchases }) => ({
+    ...state,
+    purchases: [...purchases],
+    error: null,
+    loadingPurchases: false,
+  })),
+  on(PlanetActions.fetchPlanetPurchasesFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loadingPurchases: false,
+  })),
+  on(PlanetActions.addNewPurchase, (state, { trade }) => ({
+    ...state,
+    loading: false,
+    planet: {
+      ...state.planet,
+      money: state?.planet?.money! - trade.energy * GALACTIC_ENERGY_PRICE,
+      energy: state?.planet?.energy! + trade.energy,
+    },
+    purchases: [
+      ...state.purchases,
+      {
+        ...trade,
+        status: 'completed',
+        planetBuyerId: state.planet.id,
+        planetBuyerName: state.planet.name,
+      },
+    ],
+  })),
+  on(PlanetActions.addNewSale, (state, { trade }) => ({
     ...state,
     planet: {
       ...state.planet!,
-      coinsAvailable: state?.planet?.energy! - energy,
+      energy: state?.planet?.energy! - trade.energy,
+      money: state?.planet?.money! + trade.energy * GALACTIC_ENERGY_PRICE,
     },
+    sales: [...state.sales, trade],
+    loading: false,
+  })),
+  on(PlanetActions.pushPurchaseRealTime, (state, { trade }) => ({
+    ...state,
+    planet: {
+      ...state.planet,
+      money: state?.planet?.money! - trade.energy * GALACTIC_ENERGY_PRICE,
+      energy: state?.planet?.energy! + trade.energy,
+    },
+    purchases: [
+      ...state.purchases,
+      {
+        ...trade,
+        status: trade.status,
+        planetBuyerId: state.planet.id,
+        planetBuyerName: state.planet.name,
+      },
+    ],
+  })),
+  on(PlanetActions.pushSaleRealTime, (state, { trade }) => ({
+    ...state,
+    planet: {
+      ...state.planet!,
+      energy: state?.planet?.energy! - trade.energy,
+      money: state?.planet?.money! + trade.energy * GALACTIC_ENERGY_PRICE,
+    },
+    sales: [...state.sales, trade],
   }))
 );

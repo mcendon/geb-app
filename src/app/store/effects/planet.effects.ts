@@ -23,4 +23,38 @@ export class PlanetEffects {
       )
     )
   );
+
+  fetchPlanetSales$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlanetActions.fetchPlanetSales),
+      switchMap(({ planetId }) =>
+        this.planetService.getPlanetSales(planetId).pipe(
+          map((sales) => PlanetActions.fetchPlanetSalesSuccess({ sales })),
+          catchError((error) =>
+            of(PlanetActions.fetchPlanetSalesFailure({ error: error.message }))
+          )
+        )
+      )
+    )
+  );
+
+  fetchPlanetPurchases$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(PlanetActions.fetchPlanetPurchases),
+      switchMap(({ planetId }) =>
+        this.planetService.getPlanetPurchases(planetId).pipe(
+          map((purchases) =>
+            PlanetActions.fetchPlanetPurchasesSuccess({ purchases })
+          ),
+          catchError((error) =>
+            of(
+              PlanetActions.fetchPlanetPurchasesFailure({
+                error: error.message,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 }

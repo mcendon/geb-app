@@ -23,7 +23,7 @@ export const userReducer = createReducer(
   })),
   on(UserActions.fetchUserSuccess, (state, { user }) => ({
     ...state,
-    user,
+    user: { ...user },
     loading: false,
     error: null,
   })),

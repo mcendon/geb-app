@@ -44,12 +44,24 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  logout$ = createEffect(
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.logout),
+      switchMap(() =>
+        // Call the logout service
+        this.authService.logout().pipe(
+          map(() => AuthActions.logoutSuccess()),
+          catchError((error) => of(AuthActions.logoutFailure({ error })))
+        )
+      )
+    )
+  );
+
+  logoutSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AuthActions.logout),
+        ofType(AuthActions.logoutSuccess),
         tap(() => {
-          //Call "logout" service here....
           localStorage.removeItem('_session');
           this.router.navigate(['/login']);
         })

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
+import { EnergyTrade } from './interfaces/energy-trade.interface';
 import { Planet } from './interfaces/planet.interface';
 
 @Injectable({
@@ -17,11 +18,15 @@ export class PlanetService {
     return this.http.get<Planet>(`api/planets/${id}`);
   }
 
-  getPlanetPurchases(id: number): Observable<Planet> {
-    return this.http.get<Planet>(`api/planets/${id}/purchases`);
+  getPlanetSales(planetId: number): Observable<EnergyTrade[]> {
+    return this.http
+      .get<EnergyTrade[]>(`api/energyTrades/?planetSellerId=${planetId}`)
+      .pipe(delay(2000));
   }
 
-  getPlanetSales(id: number): Observable<Planet> {
-    return this.http.get<Planet>(`api/planets/${id}/sales`);
+  getPlanetPurchases(planetId: number): Observable<EnergyTrade[]> {
+    return this.http
+      .get<EnergyTrade[]>(`api/energyTrades/?planetBuyerId=${planetId}`)
+      .pipe(delay(1000));
   }
 }

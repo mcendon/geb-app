@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
+import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
 
 @Component({
   selector: 'geb-trade-table',
-  imports: [],
+  imports: [EnergyFormatPipe],
   template: `
     <div
       class="text-bg-light p-3 overflow-auto"
@@ -16,27 +17,30 @@ import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interfa
         } @if (showBuyer()) {
         <div class="col"><strong>Buyer</strong></div>
         }
-        <div class="col"><strong>Quantity</strong></div>
+        <div class="col"><strong>Energy</strong></div>
         <div class="col"><strong>Status</strong></div>
       </div>
-      } @for(trade of trades(); track $index) {
+      } @for(trade of trades(); track trade.id) {
       <div class="row">
         @if (showSeller()) {
         <div class="col">
-          <span class="badge text-bg-warning">{{
-            trade.planetSellerName
-          }}</span>
+          <span>{{ trade.planetSellerName }}</span>
         </div>
         } @if (showBuyer()) {
         <div class="col">
-          <span class="badge text-bg-success">{{ trade.planetBuyerName }}</span>
+          <span>{{ trade.planetBuyerName || '-' }}</span>
         </div>
         }
         <div class="col">
-          <span>{{ trade.energy }}</span>
+          <span>{{ trade.energy | formatEnergy }}</span>
         </div>
         <div class="col">
-          <span class="badge text-bg-primary">{{ trade.status }}</span>
+          <span
+            class="badge"
+            [class.text-bg-success]="trade.status === 'completed'"
+            [class.text-bg-primary]="trade.status === 'new'"
+            >{{ trade.status }}</span
+          >
         </div>
       </div>
       } @empty {
@@ -49,7 +53,7 @@ import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interfa
   styles: ``,
 })
 export class TradeTableComponent {
-  trades = input<EnergyTrade[] | undefined>([]);
+  trades = input<EnergyTrade[]>([]);
   showSeller = input<boolean>(true);
   showBuyer = input<boolean>(true);
 }

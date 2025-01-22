@@ -1,25 +1,33 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
-import { filter, Subject, takeUntil, tap } from 'rxjs';
 import { logout } from '../../store/actions/auth.actions';
+
+import * as PlanetSelectors from '../../store/selectors/planet.selectors';
+import * as UserSelectors from '../../store/selectors/user.selectors';
+import { GalacticCurrencyPipe } from '../../core/pipes/currency-pipe.pipe';
+import { GALACTIC_ENERGY_PRICE } from '../../core/constants';
+import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
 
 @Component({
   selector: 'geb-header',
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, GalacticCurrencyPipe, EnergyFormatPipe],
   template: `
     <header class="geb_header">
       <h1 class="geb_header__title">{{ 'APP_NAME' | translate }}</h1>
       <div>
         <span>{{
-          'WELCOME_MESSAGE'
-            | translate : { name: userName(), planet: userPlanet() }
+          'WELCOME_MESSAGE' | translate : { name: userName(), planet: planet() }
         }}</span>
+        <span class="geb_header__badge badge text-bg-success"
+          >Energy: {{ planetEnergy() | formatEnergy }}</span
+        >
+        <span class="geb_header__badge badge text-bg-warning"
+          >Money: {{ planetMoney()! | galacticCurrency }}</span
+        >
+        <span class="geb_header__badge badge text-bg-info"
+          >Energy price: {{ energyPrice | galacticCurrency }}</span
+        >
         <button
           (click)="doLogout()"
           class="btn btn-danger geb_header__logout"
@@ -46,44 +54,26 @@ import { logout } from '../../store/actions/auth.actions';
       &__logout {
         margin: 0.5em;
       }
+      &__badge {
+        margin: 0 0.5em;
+      }
     }
   
   `,
 })
 export class HeaderComponent {
   private readonly store = inject(Store);
-  private readonly destroy$ = new Subject<void>();
-
-  userName = signal('');
-  userPlanet = signal('');
+  userName!: Signal<string>;
+  planet!: Signal<string>;
+  planetEnergy!: Signal<number>;
+  planetMoney!: Signal<number>;
+  energyPrice = GALACTIC_ENERGY_PRICE;
 
   ngOnInit() {
-    this.store
-      .select('user')
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((user) => !!user.user),
-        tap((user) => {
-          this.userName.set(user.user?.name!);
-        })
-      )
-      .subscribe();
-
-    this.store
-      .select('planet')
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((planet) => !!planet.planet),
-        tap((planet) => {
-          this.userPlanet.set(planet.planet?.name!);
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.userName = this.store.selectSignal(UserSelectors.selectName);
+    this.planet = this.store.selectSignal(PlanetSelectors.selectName);
+    this.planetEnergy = this.store.selectSignal(PlanetSelectors.selectEnergy);
+    this.planetMoney = this.store.selectSignal(PlanetSelectors.selectMoney);
   }
 
   doLogout() {

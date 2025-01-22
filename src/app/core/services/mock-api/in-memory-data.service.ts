@@ -51,24 +51,18 @@ export class InMemoryDataService implements InMemoryDbService {
       name: 'Earth',
       energy: 1000,
       money: 5000,
-      sales: [],
-      purchases: [],
     },
     {
       id: 2,
       name: 'Mars',
       energy: 800,
       money: 3000,
-      sales: [],
-      purchases: [],
     },
     {
       id: 3,
       name: 'Ulthar',
       energy: 1200,
       money: 7000,
-      sales: [],
-      purchases: [],
     },
   ];
 
@@ -174,14 +168,14 @@ export class InMemoryDataService implements InMemoryDbService {
       id: 14,
       planetSellerId: 2,
       planetSellerName: 'Mars',
-      energy: 1400,
+      energy: 100,
       status: 'new',
     },
     {
       id: 15,
       planetSellerId: 3,
       planetSellerName: 'Ulthar',
-      energy: 1500,
+      energy: 150,
       status: 'new',
     },
     {
@@ -195,7 +189,7 @@ export class InMemoryDataService implements InMemoryDbService {
       id: 17,
       planetSellerId: 2,
       planetSellerName: 'Mars',
-      energy: 1700,
+      energy: 170,
       status: 'new',
     },
     {
@@ -216,7 +210,7 @@ export class InMemoryDataService implements InMemoryDbService {
       id: 20,
       planetSellerId: 2,
       planetSellerName: 'Mars',
-      energy: 2000,
+      energy: 200,
       status: 'new',
     },
     {
@@ -237,7 +231,7 @@ export class InMemoryDataService implements InMemoryDbService {
       id: 23,
       planetSellerId: 2,
       planetSellerName: 'Mars',
-      energy: 2300,
+      energy: 230,
       status: 'new',
     },
     {
@@ -300,7 +294,6 @@ export class InMemoryDataService implements InMemoryDbService {
   sessions: Session[] = [];
 
   createDb() {
-    this.initializePlanets();
     return {
       users: this.users,
       languages: this.languages,
@@ -339,43 +332,5 @@ export class InMemoryDataService implements InMemoryDbService {
     return this.sessions.find(
       (session) => session.token === token && session.expiresAt > new Date()
     );
-  }
-
-  /**
-   * Initialize planet sales and purchases.
-   * This is done once when the in-memory database is created.
-   */
-  initializePlanets() {
-    //initialize planet sales and purchases
-    this.planets.forEach((planet) => {
-      planet.sales = this.energyTrades.filter(
-        (trade) => trade.planetSellerId === planet.id
-      );
-      planet.purchases = this.energyTrades.filter(
-        (trade) => trade.planetBuyerId === planet.id
-      );
-    });
-  }
-
-  /**
-   * Simulate adding a new energy trade.
-   * It adds the trade to the energyTrades array
-   * and also to the sales and purchases arrays of the seller and buyer planets.
-   * @param trade: EnergyTrade
-   */
-  addEnergyTrade(trade: EnergyTrade) {
-    this.energyTrades.push(trade);
-    const seller = this.planets.find(
-      (planet) => planet.id === trade.planetSellerId
-    );
-    const buyer = this.planets.find(
-      (planet) => planet.id === trade.planetBuyerId
-    );
-    if (seller && !seller.sales.find((t) => t.id === trade.id)) {
-      seller.sales.push(trade);
-    }
-    if (buyer && !buyer.purchases.find((t) => t.id === trade.id)) {
-      buyer.purchases.push(trade);
-    }
   }
 }

@@ -4,12 +4,12 @@ import { Component } from '@angular/core';
   selector: 'geb-trade-sell-page',
   imports: [],
   template: `
-    <p>
-      trade-sell-page works!
+    <h1 class="p-3">Sell energy</h1>
+    <p class="p-3">
+      This is the trade sell page. Could be implemented by dispatching the
+      <strong>TradeActions.sellEnergy action</strong>
     </p>
   `,
-  styles: ``
+  styles: ``,
 })
-export class TradeSellPageComponent {
-
-}
+export class TradeSellPageComponent {}

@@ -15,5 +15,5 @@ export interface EnergyTrade {
   planetBuyerId?: number | null;
   planetBuyerName?: string | null;
   energy: number;
-  status: 'new' | 'pending' | 'completed';
+  status: string;
 }

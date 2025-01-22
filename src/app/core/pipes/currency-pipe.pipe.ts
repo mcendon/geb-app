@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GalacticCurrencyPipe implements PipeTransform {
   transform(value: number, currencyCode: string = '$GAL'): string {
-    return `${value} ${currencyCode}`;
+    return `${value?.toFixed(2) || '-'} ${currencyCode}`;
   }
 }

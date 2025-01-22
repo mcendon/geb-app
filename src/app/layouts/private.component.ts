@@ -1,15 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
+import {
+  combineLatest,
+  mergeAll,
+  Subject,
+  take,
+  takeLast,
+  takeUntil,
+} from 'rxjs';
 import { FooterComponent } from '../components/organisms/footer.component';
 import { HeaderComponent } from '../components/organisms/header.component';
 import { SidebarComponent } from '../components/organisms/sidebar.component';
+import { RealtimeHandlerService } from '../core/services/realtime-handler.service';
+import { StoreDispatcherService } from '../core/services/store-dispatcher.service';
 import * as UserActions from '../store/actions/user.actions';
-import * as PlanetActions from '../store/actions/planet.actions';
 import { AuthState } from '../store/reducers/auth.reducer';
-import { UserState } from '../store/reducers/user.reducer';
-import { filter, Subject, takeUntil } from 'rxjs';
+import * as PlanetSelectors from '../store/selectors/planet.selectors';
+import * as TradeSelectors from '../store/selectors/trade.selectors';
 
 @Component({
   selector: 'geb-dashboard-page',
@@ -40,10 +49,11 @@ import { filter, Subject, takeUntil } from 'rxjs';
       background: var(--bs-light-bg-subtle);
       color: var(	--bs-light-text-emphasis);
     }`,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateComponent {
   private readonly store = inject(Store);
+  private readonly storeDispatcherService = inject(StoreDispatcherService);
+  private readonly realtimeHandlerService = inject(RealtimeHandlerService);
   private readonly destroy$ = new Subject<void>();
 
   ngOnInit() {
@@ -54,22 +64,28 @@ export class PrivateComponent {
       }
     });
 
-    this.store
-      .select('user')
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((userState: UserState) => !!userState.user)
-      )
-      .subscribe((userState: UserState) => {
-        if (!!userState?.user?.planetId) {
-          this.store.dispatch(
-            PlanetActions.fetchPlanet({ planetId: userState?.user?.planetId })
-          );
+    this.storeDispatcherService
+      .dispatchAppInitActions()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe();
+
+    // Start the realtime handler when all the data is loaded
+    // This is to ensure that we dont pull duplicated data from the server
+    combineLatest([
+      this.store.select(TradeSelectors.selectTradeLoading),
+      this.store.select(PlanetSelectors.isLoadingSales),
+      this.store.select(PlanetSelectors.isLoadingPurchases),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([tradeLoading, salesLoading, purchasesLoading]) => {
+        if (!tradeLoading && !salesLoading && !purchasesLoading) {
+          this.realtimeHandlerService.start();
         }
       });
   }
 
   ngOnDestroy() {
+    this.realtimeHandlerService.stop();
     this.destroy$.next();
     this.destroy$.complete();
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AuthServiceMockService } from './mock-api/auth-service-mock.service';
 import { Session } from './interfaces/session.interface';
 
@@ -15,5 +15,11 @@ export class AuthService {
     // This is a mock implementation.
     // In a real application, you would call an API to authenticate the user.
     return this.authMockService.doLoginMock(email, password);
+  }
+
+  logout(): Observable<any> {
+    // This is a mock implementation.
+    // In a real application, you would call an API to log out the user.
+    return of({});
   }
 }
