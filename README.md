@@ -2,6 +2,13 @@
 
 This project was generated using Angular CLI version 19.0.7.
 
+Environment info:
+
+Angular CLI: 19.1.1  
+Node: 20.15.1
+Package Manager: npm 10.9.2
+OS: win32 x64
+
 ## Development Server
 
 To start a local development server, run:
