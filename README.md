@@ -1,59 +1,40 @@
 # GebApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+This project was generated using Angular CLI version 19.0.7.
 
-## Development server
+## Development Server
 
 To start a local development server, run:
 
-```bash
+bash
+
+```
+npm i
 ng serve
+
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+# About the Project
 
-## Code scaffolding
+1.  **Angular Framework**: The project is built using the latest available stable version of Angular at the time of writing (v19).
+2.  **NgRx for State Management**: The project utilizes NgRx, a state management library for Angular applications, to handle the application's state. This includes actions, reducers, and selectors to manage state changes in a predictable manner.
+3.  **Authentication**: The project includes mocked authentication functionality, featuring actions and reducers for login, logout, and session restoration. The `AuthGuard` is employed to protect routes and ensure that only authenticated users can access certain parts of the application.
+4.  **Component Structure**: The project follows a standalone component-based structure, adhering to atomic design principles (atoms, molecules, organisms, and templates) for ease of reusability. These components are responsible for rendering the UI and handling user interactions. Custom UI components, such as `geb-header`, `geb-sidebar`, and `geb-footer`, are used to construct the application's layout. For prototyping purposes, all components use inline styles and templates. However, these can be modified to use separate templates and styles if needed for scalability or maintainability.
+5.  **Internationalization (i18n)**: The project employs Angular Translate for internationalization, allowing support for multiple languages. The `en.json` and `ma.json` files contain translation strings, with placeholders for dynamic content. Untranslated strings fall back to `en.json`.
+6.  **Styling**: The project uses SCSS for styling.
+7.  **Routing**: The project leverages Angular's Router module for navigation between different views. The `router-outlet` directive is used within the `PrivateComponent` to render routed components in the "logged in" or "private" section.
+8.  **Services**: The project includes services such as `UserService` to handle HTTP requests and interact with the backend API. The `UserService` includes methods for fetching and manipulating user data. `InMemoryDbService` is used for demonstration and prototyping purposes.
+9.  **Security**: Authentication is modeled in a stateless manner, generating a mocked session token and storing it in localStorage. In a real-world solution, signed JWT tokens, SSL, and a real API should be used.
+10. **Bootstrap**: Bootstrap CSS is included globally in the main `index.html` to assist with prototyping and expedite development. However, no Bootstrap or global styles are used in the `PieChartComponent` as it is encapsulated using **ShadowDom**.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+11. **Real-time Application Simulation**: The `RealtimeDatabaseSimulatorService` simulates a real-time database by pushing data at customizable intervals using `setInterval` and `Observable`. In a real-world scenario, Firebase Realtime Database, WebSockets, or long-polling strategies should be used. This real-time data simulator service is created for prototyping purposes only.
 
-```bash
-ng generate component component-name
-```
+12. **Real-time Data Handling**: Real-time data is managed using Observables in some cases and Ng Signals in others. This mixed approach demonstrates the usage of both methods and provides more readable and manageable code in certain components.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+(Refer to code comments for more information)
 
-```bash
-ng generate --help
-```
+# How Do I Login?
 
-## Building
+The application includes mocked users. Refer to the `InMemoryDataService.users` object.
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+I hope this meets your needs! If you have any other requests or questions, feel free to ask.
