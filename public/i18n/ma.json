@@ -1,16 +1,46 @@
 {
-  "APP_NAME": "Zorglak Energi Baza",
-  "LANG": { "EN": "Inglakt", "MA": "Martlak" },
-  "MODE": { "DARK": "Zon", "LIGHT": "Lax" },
-  "NOT_FOUND": { "TITLE": "Ooopsnax!", "MESSAGE": "Da glorp lak nok vin." },
-  "LOGIN": {
-    "TITLE": "GleepNet",
-    "EMAIL": "Glorpnal",
-    "PASSWORD": "Glapzap",
-    "EMAIL_PLACEHOLDER": "Gleep glorpnal nax",
-    "PASSWORD_PLACEHOLDER": "Gleep glapzap nax",
-    "LOGIN": "GleepNet"
+  "APP_NAME": "Galatix Enékei Bazá",
+  "LANG": {
+    "EN": "Englox",
+    "MA": "Martex"
   },
-  "SELECT_LANGUAGE": "Zorblip Glorpnal",
-  "SELECT_MODE": "Zorblip Glapzap"
+  "MODE": {
+    "DARK": "Nox",
+    "LIGHT": "Lux"
+  },
+  "NOT_FOUND": {
+    "TITLE": "Oooopz!",
+    "MESSAGE": "L'pagix ke cerq no exista."
+  },
+  "LOGIN": {
+    "TITLE": "Inyit",
+    "EMAIL": "Elém",
+    "PASSWORD": "Pazq",
+    "EMAIL_PLACEHOLDER": "Inyit yu elém",
+    "PASSWORD_PLACEHOLDER": "Inyit yu pazq",
+    "LOGIN": "Inyit"
+  },
+  "SELECT_LANGUAGE": "Slect Langlox",
+  "SELECT_MODE": "Slect Modix",
+  "MENU": {
+    "DASHBOARD": "Dashbord",
+    "LEADERBOARD": "Ledbord",
+    "SELL": "Sél energ",
+    "BUY": "Bai energ"
+  },
+  "WELCOME_MESSAGE": "Welcom {{name}} fróm planet {{planet}}.",
+  "ENERGY": "Energ",
+  "MONEY": "Moné",
+  "ENERGY_PRICE": "Energ Prex",
+  "LOGOUT": "Logút",
+  "DASHBOARD": {
+    "TITLE": "Planét {{planet}} Dashbord",
+    "GLOBAL_TRADES": "Globál Trads",
+    "PLANET_OPEN_SALES": "Planét Ophen Salés",
+    "PLANET_CLOSED_SALES": "Planét Closéd Salés",
+    "PLANET_OPEN_PURCHASES": "Planét Ophen Purchasés",
+    "PLANET_ENERGY": "Energ",
+    "PLANET_MONEY": "Moné",
+    "ENERGY_PRICE": "Energ Prex"
+  }
 }

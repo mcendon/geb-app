@@ -28,5 +28,20 @@
     "SELL": "Sell energy",
     "BUY": "Buy energy"
   },
-  "WELCOME_MESSAGE": "Welcome {{name}} from planet {{planet}}."
+  "WELCOME_MESSAGE": "Welcome {{name}} from planet {{planet}}.",
+  "ENERGY": "Energy",
+  "MONEY": "Money",
+  "ENERGY_PRICE": "Energy Price",
+  "LOGOUT": "Logout",
+  "DASHBOARD": {
+    "TITLE": "Planet {{planet}} Dashboard",
+    "GLOBAL_TRADES": "Global Trades",
+    "PLANET_OPEN_SALES": "Planet Open Sales",
+    "PLANET_CLOSED_SALES": "Planet Closed Sales",
+    "PLANET_OPEN_PURCHASES": "Planet Open Purchases",
+    "PLANET_ENERGY": "Energy",
+    "PLANET_MONEY": "Money",
+    "ENERGY_PRICE": "Energy Price"
+  },
+  "SELL_PAGE_MESSAGE": "This is the trade sell page. Could be implemented by dispatching the TradeActions.sellEnergy action"
 }

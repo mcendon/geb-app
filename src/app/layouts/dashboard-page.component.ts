@@ -10,6 +10,7 @@ import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface'
 import { Planet } from '../core/services/interfaces/planet.interface';
 import * as PlanetSelectors from '../store/selectors/planet.selectors';
 import * as TradeSelectors from '../store/selectors/trade.selectors';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'geb-dashboard-page',
@@ -18,21 +19,26 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
     GalacticCurrencyPipe,
     EnergyFormatPipe,
     LoadingDirective,
+    TranslatePipe,
   ],
   template: `
     <div class="d-flex flex-column p-3">
-      <h1>Planet {{ planetName() }} Dashboard</h1>
+      <h1>
+        {{ 'DASHBOARD.TITLE' | translate : { planet: planetName() } }}
+      </h1>
       <div class="row">
         <div class="col-md-8 p-2 col-12">
           <div class="mb-3">
-            <h2 class="title">Global trades</h2>
+            <h2 class="title">{{ 'DASHBOARD.GLOBAL_TRADES' | translate }}</h2>
             <geb-trade-table
               [appLoading]="loadingTrades()"
               [trades]="allTrades()"
             ></geb-trade-table>
           </div>
           <div class="mb-3">
-            <h2 class="title">Planet open sales</h2>
+            <h2 class="title">
+              {{ 'DASHBOARD.PLANET_OPEN_SALES' | translate }}
+            </h2>
             <geb-trade-table
               [appLoading]="loadingSales()"
               [showBuyer]="false"
@@ -40,7 +46,9 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
             ></geb-trade-table>
           </div>
           <div class="mb-3">
-            <h2 class="title">Planet closed sales</h2>
+            <h2 class="title">
+              {{ 'DASHBOARD.PLANET_CLOSED_SALES' | translate }}
+            </h2>
             <geb-trade-table
               [appLoading]="loadingSales()"
               [showSeller]="false"
@@ -48,7 +56,9 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
             ></geb-trade-table>
           </div>
           <div class="mb-3">
-            <h2 class="title">Planet purchases</h2>
+            <h2 class="title">
+              {{ 'DASHBOARD.PLANET_OPEN_PURCHASES' | translate }}
+            </h2>
             <geb-trade-table
               [appLoading]="loadingPurchases()"
               [trades]="closedPurchases()"
@@ -60,7 +70,7 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
             <div
               class="col-md-12 d-flex flex-column justify-content-center align-items-center"
             >
-              <h2 class="title">Planet energy</h2>
+              <h2 class="title">{{ 'DASHBOARD.PLANET_ENERGY' | translate }}</h2>
               <span class="text-md">
                 {{ planetEnergy() | formatEnergy }}
               </span>
@@ -70,7 +80,7 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
             <div
               class="col-md-12 d-flex flex-column justify-content-center align-items-center"
             >
-              <h2 class="title">Planet budget</h2>
+              <h2 class="title">{{ 'DASHBOARD.PLANET_MONEY' | translate }}</h2>
               <span class="text-md">{{
                 planetMoney() | galacticCurrency
               }}</span>
@@ -80,7 +90,7 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
             <div
               class="col-md-12 d-flex flex-column justify-content-center align-items-center"
             >
-              <h2 class="title">Energy price</h2>
+              <h2 class="title">{{ 'DASHBOARD.ENERGY_PRICE' | translate }}</h2>
               <span class="text-md">
                 {{ energyPrice | galacticCurrency }}
               </span>

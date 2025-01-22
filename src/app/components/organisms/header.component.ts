@@ -20,20 +20,22 @@ import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
           'WELCOME_MESSAGE' | translate : { name: userName(), planet: planet() }
         }}</span>
         <span class="geb_header__badge badge text-bg-success"
-          >Energy: {{ planetEnergy() | formatEnergy }}</span
+          >{{ 'ENERGY' | translate }}: {{ planetEnergy() | formatEnergy }}</span
         >
         <span class="geb_header__badge badge text-bg-warning"
-          >Money: {{ planetMoney()! | galacticCurrency }}</span
+          >{{ 'MONEY' | translate }}:
+          {{ planetMoney()! | galacticCurrency }}</span
         >
         <span class="geb_header__badge badge text-bg-info"
-          >Energy price: {{ energyPrice | galacticCurrency }}</span
+          >{{ 'ENERGY_PRICE' | translate }}:
+          {{ energyPrice | galacticCurrency }}</span
         >
         <button
           (click)="doLogout()"
           class="btn btn-danger geb_header__logout"
           type="button"
         >
-          Logout
+          {{ 'LOGOUT' | translate }}
         </button>
       </div>
     </header>
