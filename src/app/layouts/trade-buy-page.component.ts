@@ -1,9 +1,8 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
-  Signal,
   signal,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -11,23 +10,14 @@ import { AvailableTradesListComponent } from '../components/molecules/available-
 import { GALACTIC_ENERGY_PRICE } from '../core/constants';
 import { GalacticCurrencyPipe } from '../core/pipes/currency-pipe.pipe';
 import { Planet } from '../core/services/interfaces/planet.interface';
-import { TradeService } from '../core/services/trade-service.service';
 
+import { AsyncPipe } from '@angular/common';
+import { filter, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
 import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface';
 import * as TradeActions from '../store/actions/trade.actions';
 import * as PlanetSelectors from '../store/selectors/planet.selectors';
 import * as TradeSelectors from '../store/selectors/trade.selectors';
-import {
-  filter,
-  Observable,
-  Subject,
-  take,
-  takeLast,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { AsyncPipe } from '@angular/common';
-import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
 
 @Component({
   selector: 'geb-trade-buy-page',
@@ -73,6 +63,7 @@ import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
     }
   `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TradeBuyPageComponent {
   private readonly store = inject(Store);
@@ -102,7 +93,12 @@ export class TradeBuyPageComponent {
       );
   }
 
+  ngOnInit() {
+    console.log('TradeBuyPageComponent initialized');
+  }
+
   ngOnDestroy() {
+    console.log('TradeBuyPageComponent destroyed');
     this.destroy$.next();
     this.destroy$.complete();
   }

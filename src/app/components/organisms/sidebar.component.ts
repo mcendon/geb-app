@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { VerticalMenuComponent } from '../molecules/vertical-menu.component';
 
 @Component({
@@ -6,12 +6,19 @@ import { VerticalMenuComponent } from '../molecules/vertical-menu.component';
   imports: [VerticalMenuComponent],
   template: ` <geb-vertical-menu [menuItems]="menuItems"></geb-vertical-menu> `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidebarComponent {
   menuItems = [
     { label: 'MENU.DASHBOARD', link: '/private/dashboard' },
     { label: 'MENU.BUY', link: '/private/buy-energy' },
     { label: 'MENU.SELL', link: '/private/sell-energy' },
-    { label: 'MENU.LEADERBOARD', link: '/private/leaderboard' },
   ];
+
+  ngOnInit() {
+    this.menuItems.push({
+      label: 'MENU.LEADERBOARD',
+      link: '/private/leaderboard',
+    });
+  }
 }

@@ -1,17 +1,37 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
+import {
+  CdkVirtualScrollViewport,
+  ScrollingModule,
+} from '@angular/cdk/scrolling';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  input,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
+import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
 
 @Component({
   selector: 'geb-trade-table',
-  imports: [EnergyFormatPipe],
+  imports: [EnergyFormatPipe, ScrollingModule],
   template: `
-    <div
-      class="text-bg-light p-3 overflow-auto"
-      style="max-height: 50vh; border-radius: 6px"
+    @if (!!trades() && trades()!.length > 0) {
+    <div>
+      <input
+        type="checkbox"
+        [checked]="autoScroll()"
+        (change)="toggleAutoScroll()"
+      />
+      <span>Auto scroll</span>
+    </div>
+    <cdk-virtual-scroll-viewport
+      #scrollViewport
+      [itemSize]="30"
+      class="text-bg-light p-3 scroll-viewport"
     >
-      @if (!!trades() && trades()!.length > 0) {
-      <div class="row">
+      <div class="row fixed-height">
         @if (showSeller()) {
         <div class="col"><strong>Seller</strong></div>
         } @if (showBuyer()) {
@@ -20,8 +40,8 @@ import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
         <div class="col"><strong>Energy</strong></div>
         <div class="col"><strong>Status</strong></div>
       </div>
-      } @for(trade of trades(); track trade.id) {
-      <div class="row">
+
+      <div *cdkVirtualFor="let trade of trades()" class="row fixed-height">
         @if (showSeller()) {
         <div class="col">
           <span>{{ trade.planetSellerName }}</span>
@@ -43,17 +63,49 @@ import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
           >
         </div>
       </div>
-      } @empty {
-      <div class="col d-flex justify-content-center">
-        <span>There is no available data</span>
-      </div>
-      }
+    </cdk-virtual-scroll-viewport>
+    } @else {
+    <div class="col d-flex justify-content-center">
+      <span>There is no available data</span>
     </div>
+    }
   `,
-  styles: ``,
+  styles: `
+  :host {
+    display: block;
+    min-height: 10vh;
+  }
+  .scroll-viewport {
+    min-height: 40vh; 
+    max-height: 60vh;
+    border-radius: 6px
+  }
+  .fixed-height {
+    height: 30px;
+  }`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TradeTableComponent {
   trades = input<EnergyTrade[]>([]);
   showSeller = input<boolean>(true);
   showBuyer = input<boolean>(true);
+  autoScroll = signal<boolean>(true);
+  @ViewChild('scrollViewport') scrollViewport: CdkVirtualScrollViewport;
+
+  constructor() {
+    effect(() => {
+      if (
+        this.trades().length > 0 &&
+        this.scrollViewport &&
+        this.autoScroll()
+      ) {
+        // Scroll to the bottom of the list
+        this.scrollViewport.scrollTo({ bottom: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  toggleAutoScroll() {
+    this.autoScroll.set(!this.autoScroll());
+  }
 }

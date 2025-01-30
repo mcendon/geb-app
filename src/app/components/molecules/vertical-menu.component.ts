@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MenuItemComponent } from '../atoms/menu-item.component';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -21,6 +21,7 @@ type MenuItems = {
   host: {
     class: 'nav flex-column',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerticalMenuComponent {
   menuItems = input<MenuItems>();

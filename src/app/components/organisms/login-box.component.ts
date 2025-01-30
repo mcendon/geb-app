@@ -1,4 +1,10 @@
-import { Component, input, model, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  model,
+  output,
+} from '@angular/core';
 import { FormItemComponent } from '../molecules/form-item.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
@@ -49,6 +55,7 @@ type LoginData = {
     </div>
   `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginBoxComponent {
   title = input('');

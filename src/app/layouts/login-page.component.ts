@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FooterComponent } from '../components/organisms/footer.component';
@@ -30,6 +30,7 @@ import { login } from '../store/actions/auth.actions';
       color: var(	--bs-light-text-emphasis);
     }
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
   private readonly store = inject(Store);

@@ -1,4 +1,12 @@
-import { Component, effect, inject, input, model, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  model,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -69,6 +77,7 @@ import {
   host: {
     class: 'mt-auto',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FooterComponent {
   appName = input('');

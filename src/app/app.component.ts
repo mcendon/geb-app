@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  HostBinding,
   inject,
   signal,
 } from '@angular/core';
@@ -9,12 +8,11 @@ import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PreferencesState } from './store/reducers/user-preferences.reducer';
+import { Subject, takeUntil } from 'rxjs';
 import {
   selectLanguage,
   selectMode,
 } from './store/selectors/user-preferences.selectors';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'geb-root',
@@ -28,6 +26,7 @@ import { Subject, takeUntil } from 'rxjs';
   host: {
     '[attr.data-bs-theme]': 'mode()',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   private readonly translate = inject(TranslateService);

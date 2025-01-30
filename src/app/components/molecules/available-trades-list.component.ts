@@ -1,4 +1,9 @@
-import { Component, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+} from '@angular/core';
 import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
 import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
 
@@ -28,6 +33,7 @@ import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interfa
   host: {
     class: 'list-group',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvailableTradesListComponent {
   onSelect = output<EnergyTrade>();

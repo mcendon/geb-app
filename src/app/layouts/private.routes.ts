@@ -7,6 +7,7 @@ export const privateRoutes: Routes = [
       import('./dashboard-page.component').then(
         (m) => m.DashboardPageComponent
       ),
+    data: { reuse: true }, // Reuse the dashboard component to avoid destroy and recreate
   },
   {
     path: 'leaderboard',

@@ -1,9 +1,9 @@
-import { Component, computed, inject, signal, Signal } from '@angular/core';
-import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as TradeSelectors from '../store/selectors/trade.selectors';
-import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
 import { PieChartComponent } from '../components/molecules/pie-chart.component';
+import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
+import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface';
+import * as TradeSelectors from '../store/selectors/trade.selectors';
 
 @Component({
   selector: 'geb-leaderboard-page',
@@ -63,8 +63,13 @@ export class LeaderboardPageComponent {
   });
 
   ngOnInit() {
+    console.log('LeaderboardPageComponent initialized');
     //All trades
     this.allTrades = this.store.selectSignal(TradeSelectors.selectTrades);
+  }
+
+  ngOnDestroy() {
+    console.log('LeaderboardPageComponent destroyed');
   }
 
   calculateLeaderboard(trades: EnergyTrade[]) {

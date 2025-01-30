@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
@@ -12,5 +12,13 @@ import { TranslatePipe } from '@ngx-translate/core';
     </p>
   `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TradeSellPageComponent {}
+export class TradeSellPageComponent {
+  ngOnInit() {
+    console.log('TradeSellPageComponent initialized');
+  }
+  ngOnDestroy() {
+    console.log('TradeSellPageComponent destroyed');
+  }
+}

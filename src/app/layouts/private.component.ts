@@ -1,15 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
-import {
-  combineLatest,
-  mergeAll,
-  Subject,
-  take,
-  takeLast,
-  takeUntil,
-} from 'rxjs';
+import { combineLatest, filter, skip, Subject, take, takeUntil } from 'rxjs';
 import { FooterComponent } from '../components/organisms/footer.component';
 import { HeaderComponent } from '../components/organisms/header.component';
 import { SidebarComponent } from '../components/organisms/sidebar.component';
@@ -49,6 +42,7 @@ import * as TradeSelectors from '../store/selectors/trade.selectors';
       background: var(--bs-light-bg-subtle);
       color: var(	--bs-light-text-emphasis);
     }`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PrivateComponent {
   private readonly store = inject(Store);
@@ -71,20 +65,27 @@ export class PrivateComponent {
 
     // Start the realtime handler when all the data is loaded
     // This is to ensure that we dont pull duplicated data from the server
-    combineLatest([
-      this.store.select(TradeSelectors.selectTradeLoading),
-      this.store.select(PlanetSelectors.isLoadingSales),
-      this.store.select(PlanetSelectors.isLoadingPurchases),
-    ])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([tradeLoading, salesLoading, purchasesLoading]) => {
-        if (!tradeLoading && !salesLoading && !purchasesLoading) {
-          this.realtimeHandlerService.start();
-        }
+    combineLatest({
+      tradeLoading: this.store.select(TradeSelectors.selectTradeLoading),
+      salesLoading: this.store.select(PlanetSelectors.isLoadingSales),
+      purchasesLoading: this.store.select(PlanetSelectors.isLoadingPurchases),
+    })
+      .pipe(
+        filter(
+          ({ tradeLoading, salesLoading, purchasesLoading }) =>
+            !tradeLoading && !salesLoading && !purchasesLoading
+        ),
+        skip(1),
+        take(1)
+      )
+      .subscribe(() => {
+        console.log('All data loaded, starting realtime handler');
+        this.realtimeHandlerService.start();
       });
   }
 
   ngOnDestroy() {
+    console.log('Destroying PrivateComponent');
     this.realtimeHandlerService.stop();
     this.destroy$.next();
     this.destroy$.complete();

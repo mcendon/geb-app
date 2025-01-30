@@ -1,5 +1,6 @@
-import { Component, computed, effect, inject, Signal } from '@angular/core';
+import { Component, computed, inject, Signal } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { TradeTableComponent } from '../components/molecules/trade-table.component';
 import { GALACTIC_ENERGY_PRICE } from '../core/constants';
@@ -10,7 +11,6 @@ import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface'
 import { Planet } from '../core/services/interfaces/planet.interface';
 import * as PlanetSelectors from '../store/selectors/planet.selectors';
 import * as TradeSelectors from '../store/selectors/trade.selectors';
-import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'geb-dashboard-page',
@@ -30,39 +30,47 @@ import { TranslatePipe } from '@ngx-translate/core';
         <div class="col-md-8 p-2 col-12">
           <div class="mb-3">
             <h2 class="title">{{ 'DASHBOARD.GLOBAL_TRADES' | translate }}</h2>
+            @defer {
             <geb-trade-table
               [appLoading]="loadingTrades()"
               [trades]="allTrades()"
             ></geb-trade-table>
+            }
           </div>
           <div class="mb-3">
             <h2 class="title">
               {{ 'DASHBOARD.PLANET_OPEN_SALES' | translate }}
             </h2>
+            @defer {
             <geb-trade-table
               [appLoading]="loadingSales()"
               [showBuyer]="false"
               [trades]="openTrades()"
             ></geb-trade-table>
+            }
           </div>
           <div class="mb-3">
             <h2 class="title">
               {{ 'DASHBOARD.PLANET_CLOSED_SALES' | translate }}
             </h2>
+            @defer {
             <geb-trade-table
               [appLoading]="loadingSales()"
               [showSeller]="false"
               [trades]="closedSales()"
             ></geb-trade-table>
+            }
           </div>
           <div class="mb-3">
             <h2 class="title">
               {{ 'DASHBOARD.PLANET_OPEN_PURCHASES' | translate }}
             </h2>
+            @defer {
             <geb-trade-table
               [appLoading]="loadingPurchases()"
               [trades]="closedPurchases()"
             ></geb-trade-table>
+            }
           </div>
         </div>
         <div class="col-md-4">
@@ -152,6 +160,7 @@ export class DashboardPageComponent {
   }
 
   ngOnInit() {
+    console.log('Initializing DashboardPageComponent');
     //All trades
     this.allTrades = this.store.selectSignal(TradeSelectors.selectTrades);
 
@@ -178,6 +187,7 @@ export class DashboardPageComponent {
   }
 
   ngOnDestroy() {
+    console.log('Destroying DashboardPageComponent');
     this.destroy$.next();
     this.destroy$.complete();
   }

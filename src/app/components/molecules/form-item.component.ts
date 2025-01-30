@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'geb-form-item',
@@ -10,6 +10,7 @@ import { Component, input } from '@angular/core';
     </div>
   `,
   styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormItemComponent {
   label = input('');

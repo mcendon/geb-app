@@ -1,4 +1,9 @@
-import { Component, inject, Signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  Signal,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslatePipe } from '@ngx-translate/core';
 import { logout } from '../../store/actions/auth.actions';
@@ -62,6 +67,7 @@ import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
     }
   
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   private readonly store = inject(Store);

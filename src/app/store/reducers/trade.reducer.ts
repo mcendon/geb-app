@@ -45,13 +45,29 @@ export const tradeReducer = createReducer(
     ...state,
     loading: true,
   })),
-  on(TradeActions.buyEnergySuccess, (state, { trade }) => ({
-    ...state,
-    availableTrades: [
-      ...state.availableTrades.filter((t) => t.id !== trade.id),
-    ],
-    loading: false,
-  })),
+  on(TradeActions.buyEnergySuccess, (state, { trade }) => {
+    let updatedTrades = [];
+    const completedTrade = { ...trade, status: 'completed' };
+    //check if the trade is in the trades array
+    if (state.trades.find((t) => t.id === trade.id)) {
+      //if it is, update the status
+      updatedTrades = [
+        ...state.trades.map((t) => (t.id === trade.id ? completedTrade : t)),
+      ];
+    } else {
+      //if it's not, add it to the trades array
+      updatedTrades = [...state.trades, completedTrade];
+    }
+
+    return {
+      ...state,
+      availableTrades: [
+        ...state.availableTrades.filter((t) => t.id !== trade.id),
+      ],
+      trades: updatedTrades,
+      loading: false,
+    };
+  }),
   on(TradeActions.buyEnergyFailure, (state, { error }) => ({
     ...state,
     error,

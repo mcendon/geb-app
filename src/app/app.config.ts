@@ -5,7 +5,7 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core';
 
-import { provideRouter } from '@angular/router';
+import { provideRouter, RouteReuseStrategy } from '@angular/router';
 import { routes } from './app.routes';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -26,6 +26,7 @@ import { PlanetEffects } from './store/effects/planet.effects';
 import { tradeReducer } from './store/reducers/trade.reducer';
 import { TradeEffects } from './store/effects/trade.effects';
 import * as MetaReducers from './store/reducers/meta-reducers.reducer';
+import { CustomRouteReuseStrategy } from './core/routing/CustomRouteReuseStrategy';
 
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
   http: HttpClient
@@ -35,12 +36,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     importProvidersFrom([
-      isDevMode()
-        ? InMemoryWebApiModule.forRoot(InMemoryDataService, {
-            delay: 100, //adding global delay to simulate network latency
-            passThruUnknownUrl: true,
-          })
-        : [],
+      InMemoryWebApiModule.forRoot(InMemoryDataService, {
+        delay: 100, //adding global delay to simulate network latency
+        passThruUnknownUrl: true,
+      }),
       TranslateModule.forRoot({
         loader: {
           provide: TranslateLoader,
@@ -51,6 +50,10 @@ export const appConfig: ApplicationConfig = {
     ]),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    {
+      provide: RouteReuseStrategy,
+      useClass: CustomRouteReuseStrategy,
+    },
     provideStore(
       {
         preferences: preferencesReducer,

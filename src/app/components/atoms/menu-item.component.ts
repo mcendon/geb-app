@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -17,6 +17,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   host: {
     class: 'nav-item',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuItemComponent {
   link = input<string>();
