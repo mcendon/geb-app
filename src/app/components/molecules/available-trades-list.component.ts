@@ -6,33 +6,39 @@ import {
 } from '@angular/core';
 import { EnergyFormatPipe } from '../../core/pipes/energy-pipe.pipe';
 import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interface';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'geb-available-trades-list',
-  imports: [EnergyFormatPipe],
+  imports: [EnergyFormatPipe, ScrollingModule],
   template: `
-    <div class="list-group">
-      @for (trade of trades(); track trade.id) {
+    <cdk-virtual-scroll-viewport
+      class="list-group"
+      #scrollViewport
+      [itemSize]="30"
+    >
+      @if (trades()?.length > 0) {
       <a
+        *cdkVirtualFor="let trade of trades()"
         [class.active]="trade.id === selected"
         (click)="select(trade)"
         class="list-group-item list-group-item-action"
         >Buy {{ trade?.energy | formatEnergy }} from
         {{ trade?.planetSellerName }}.</a
       >
-      } @empty {
+      } @else {
       <div class="list-group-item">No trades available</div>
       }
-    </div>
+    </cdk-virtual-scroll-viewport>
   `,
   styles: `
     .list-group-item {
       cursor: pointer;
     }
+    .list-group {
+      height: 50vh;
+    }
   `,
-  host: {
-    class: 'list-group',
-  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AvailableTradesListComponent {

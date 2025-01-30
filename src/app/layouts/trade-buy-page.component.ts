@@ -12,7 +12,7 @@ import { GalacticCurrencyPipe } from '../core/pipes/currency-pipe.pipe';
 import { Planet } from '../core/services/interfaces/planet.interface';
 
 import { AsyncPipe } from '@angular/common';
-import { filter, Observable, Subject, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { EnergyFormatPipe } from '../core/pipes/energy-pipe.pipe';
 import { EnergyTrade } from '../core/services/interfaces/energy-trade.interface';
 import * as TradeActions from '../store/actions/trade.actions';
@@ -82,15 +82,27 @@ export class TradeBuyPageComponent {
       .select(PlanetSelectors.selectPlanet)
       .pipe(tap((planet) => (this.planet = planet)));
 
-    this.availableTrades$ = this.store
-      .select(TradeSelectors.selectAvailableTrades)
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((trades) => !!trades),
-        tap(() => {
+    this.availableTrades$ = this.store.select(TradeSelectors.selectTrades).pipe(
+      takeUntil(this.destroy$),
+      filter((trades) => !!trades),
+      map((trades) =>
+        trades.filter(
+          (trade) =>
+            trade.energy > 0 &&
+            trade.status === 'new' &&
+            trade.planetSellerId !== this.planet.id
+        )
+      ),
+      tap((trades) => {
+        // if the selected trade is not available anymore, deselect it
+        if (
+          this.selectedTrade() &&
+          !trades.find((t) => t.id === this.selectedTrade().id)
+        ) {
           this.selectedTrade.set(null);
-        })
-      );
+        }
+      })
+    );
   }
 
   ngOnInit() {

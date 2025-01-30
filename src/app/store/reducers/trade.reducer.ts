@@ -3,14 +3,12 @@ import { EnergyTrade } from '../../core/services/interfaces/energy-trade.interfa
 import * as TradeActions from '../actions/trade.actions';
 
 export interface TradeState {
-  availableTrades: EnergyTrade[];
   trades: EnergyTrade[];
   loading: boolean;
   error: string;
 }
 
 export const initialState: TradeState = {
-  availableTrades: [],
   trades: [],
   loading: false,
   error: null,
@@ -22,14 +20,9 @@ export const tradeReducer = createReducer(
     ...state,
     loading: true,
   })),
-  on(TradeActions.fetchTradesSuccess, (state, { trades, planetId }) => ({
+  on(TradeActions.fetchTradesSuccess, (state, { trades }) => ({
     ...state,
     trades: [...trades],
-    availableTrades: [
-      ...trades.filter(
-        (t) => t.status === 'new' && t.planetSellerId !== planetId
-      ),
-    ],
     loading: false,
   })),
   on(TradeActions.fetchTradesFailure, (state, { error }) => ({
@@ -61,9 +54,6 @@ export const tradeReducer = createReducer(
 
     return {
       ...state,
-      availableTrades: [
-        ...state.availableTrades.filter((t) => t.id !== trade.id),
-      ],
       trades: updatedTrades,
       loading: false,
     };
