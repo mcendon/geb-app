@@ -13,12 +13,6 @@ export class SidebarComponent {
     { label: 'MENU.DASHBOARD', link: '/private/dashboard' },
     { label: 'MENU.BUY', link: '/private/buy-energy' },
     { label: 'MENU.SELL', link: '/private/sell-energy' },
+    { label: 'MENU.LEADERBOARD', link: '/private/leaderboard' },
   ];
-
-  ngOnInit() {
-    this.menuItems.push({
-      label: 'MENU.LEADERBOARD',
-      link: '/private/leaderboard',
-    });
-  }
 }

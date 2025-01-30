@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, map, Observable, switchMap, take, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, take } from 'rxjs';
 import { restoreSession } from '../../store/actions/auth.actions';
 
 @Injectable({

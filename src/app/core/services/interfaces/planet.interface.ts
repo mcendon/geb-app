@@ -1,5 +1,3 @@
-import { EnergyTrade } from './energy-trade.interface';
-
 export interface Planet {
   id: number;
   name: string;
