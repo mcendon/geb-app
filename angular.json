@@ -49,6 +49,11 @@
               "outputHashing": "all"
             },
             "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "development-optimized": {
               "optimization": true,
               "extractLicenses": false,
               "sourceMap": true
@@ -64,6 +69,9 @@
             },
             "development": {
               "buildTarget": "geb-app:build:development"
+            },
+            "development-optimized": {
+              "buildTarget": "geb-app:build:development-optimized"
             }
           },
           "defaultConfiguration": "development"
